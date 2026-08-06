@@ -1,0 +1,51 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Owners</h1>
+    
+    <% if policy(Owner).create? %>
+      <%= link_to "New Owner", new_owner_path, class: "btn btn-primary" %>
+    <% end %>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Address</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @owners.each do |owner| %>
+          <tr>
+            <td><%= link_to owner.first_name, owner_path(owner), class: "text-decoration-none" %></td>
+            <td><%= owner.last_name %></td>
+            <td><%= owner.email %></td>
+            <td><%= owner.phone %></td>
+            <td><%= owner.address %></td>
+            <td>
+              <div class="btn-group" role="group">
+                <%= link_to "Show", owner_path(owner), class: "btn btn-sm btn-info" %>
+                
+                <% if policy(owner).update? %>
+                  <%= link_to "Edit", edit_owner_path(owner), class: "btn btn-sm btn-warning" %>
+                <% end %>
+                
+                <% if policy(owner).destroy? %>
+                  <%= link_to "Delete", owner_path(owner), 
+                                method: :delete, 
+                                data: { turbo_confirm: "Are you sure?" }, 
+                                class: "btn btn-sm btn-danger" %>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

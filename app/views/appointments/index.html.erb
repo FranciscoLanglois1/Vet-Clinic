@@ -1,0 +1,59 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Appointments</h1>
+    
+    <% if policy(Appointment).create? %>
+      <%= link_to "New Appointment", new_appointment_path, class: "btn btn-primary" %>
+    <% end %>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>Pet</th>
+          <th>Vet</th>
+          <th>Date</th>
+          <th>Reason</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @appointments.each do |appointment| %>
+          <tr>
+            <td>
+              <%= link_to appointment.pet&.name, pet_path(appointment.pet), class: "text-decoration-none" if appointment.pet %>
+            </td>
+            <td>
+              <%= link_to "#{appointment.vet&.first_name} #{appointment.vet&.last_name}", vet_path(appointment.vet), class: "text-decoration-none" if appointment.vet %>
+            </td>
+            <td><%= appointment.date.strftime("%B %d, %Y at %I:%M %p") if appointment.date %></td>
+            <td><%= appointment.reason %></td>
+            <td>
+              <span class="badge bg-<%= status_badge_color(appointment.status) %>">
+                <%= appointment.status.titleize %>
+              </span>
+            </td>
+            <td>
+              <div class="btn-group" role="group">
+                <%= link_to "Show", appointment_path(appointment), class: "btn btn-sm btn-info" %>
+                
+                <% if policy(appointment).update? %>
+                  <%= link_to "Edit", edit_appointment_path(appointment), class: "btn btn-sm btn-warning" %>
+                <% end %>
+                
+                <% if policy(appointment).destroy? %>
+                  <%= link_to "Delete", appointment_path(appointment), 
+                                method: :delete, 
+                                data: { turbo_confirm: "Are you sure?" }, 
+                                class: "btn btn-sm btn-danger" %>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

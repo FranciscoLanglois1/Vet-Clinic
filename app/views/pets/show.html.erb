@@ -1,0 +1,102 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h2 class="mb-0">Pet Details</h2>
+      <div>
+        <% if policy(@pet).update? %>
+          <%= link_to "Edit", edit_pet_path(@pet), class: "btn btn-sm btn-warning" %>
+        <% end %>
+        
+        <% if policy(@pet).destroy? %>
+          <%= link_to "Delete", pet_path(@pet), 
+                        method: :delete, 
+                        data: { turbo_confirm: "Are you sure?" }, 
+                        class: "btn btn-sm btn-danger" %>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <% if @pet.photo.present? %>
+            <%= image_tag "pets/#{@pet.photo}", class: 'img-fluid rounded' %>
+          <% else %>
+            <div class="bg-light rounded d-flex align-items-center justify-content-center" 
+                style="width: 100%; max-width: 300px; height: 200px; border: 1px solid #dee2e6;">
+              <span class="text-muted">No photo available</span>
+            </div>
+          <% end %>
+        </div>
+        
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Name:</strong> <%= @pet.name %></p>
+              <p><strong>Species:</strong> <%= @pet.species %></p>
+              <p><strong>Breed:</strong> <%= @pet.breed %></p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Date of Birth:</strong> <%= @pet.date_of_birth.strftime("%B %d, %Y") if @pet.date_of_birth %></p>
+              <p><strong>Weight:</strong> <%= @pet.weight %> kg</p>
+              <p><strong>Owner:</strong> <%= link_to @pet.owner&.first_name, owner_path(@pet.owner), class: "text-decoration-none" if @pet.owner %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mt-4">
+    <div class="card-header bg-secondary text-white">
+      <h3 class="h5 mb-0">Appointments for <%= @pet.name %></h3>
+    </div>
+    <div class="card-body">
+      <% if @appointments.any? %>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover table-bordered text-center">
+            <thead class="table-dark">
+              <tr>
+                <th>Vet</th>
+                <th>Date</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @appointments.each do |appointment| %>
+                <tr>
+                  <td><%= link_to appointment.vet&.first_name, vet_path(appointment.vet), class: "text-decoration-none" if appointment.vet %></td>
+                  <td><%= appointment.date.strftime("%B %d, %Y at %I:%M %p") if appointment.date %></td>
+                  <td><%= appointment.reason %></td>
+                  <td>
+                    <span class="badge bg-<%= status_badge_color(appointment.status) %>">
+                      <%= appointment.status.titleize %>
+                    </span>
+                  </td>
+                  <td>
+                    <%= link_to "View", appointment_path(appointment), class: "btn btn-sm btn-info" %>
+                    
+                    <% if policy(appointment).update? %>
+                      <%= link_to "Edit", edit_appointment_path(appointment), class: "btn btn-sm btn-warning" %>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <p class="text-muted text-center mb-0">No appointments scheduled for this pet.</p>
+      <% end %>
+    </div>
+  </div>
+  
+  <div class="mt-4 d-flex gap-2">
+    <%= link_to "Back to Pets", pets_path, class: "btn btn-secondary" %>
+  
+    <% if policy(Appointment).create? %>
+      <%= link_to "New Appointment", new_appointment_path(pet_id: @pet.id), class: "btn btn-primary" %>
+    <% end %>
+  </div> 

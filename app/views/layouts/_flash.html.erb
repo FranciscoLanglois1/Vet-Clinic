@@ -1,0 +1,14 @@
+<% flash.each do |type, message| %>
+  <% alert_class = case type.to_sym
+    when :notice then 'alert-success'
+    when :alert then 'alert-danger'
+    else 'alert-info'
+    end %>
+  
+  <%= content_tag :div, class: "alert #{alert_class} alert-dismissible fade show", role: "alert" do %>
+    <%= message %>
+    <%= tag.button type: "button", class: "btn-close", 
+      data: { bs_dismiss: "alert" }, 
+      aria: { label: "Close" } %>
+  <% end %>
+<% end %>

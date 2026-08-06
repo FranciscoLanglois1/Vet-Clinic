@@ -1,0 +1,15 @@
+{
+  "name": "vet-clinic",
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
+    "build:css": "echo 'Skipping CSS build'"
+  },
+  "dependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "@rails/actiontext": "^7.2.302",
+    "trix": "^2.1.19"
+  },
+  "devDependencies": {
+    "esbuild": "^0.20.2"
+  }
+}

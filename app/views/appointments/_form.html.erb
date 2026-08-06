@@ -1,0 +1,107 @@
+<%= render 'shared/error_messages', model: @appointment %>
+
+<%= form_with(model: @appointment, local: true) do |f| %>
+  
+  <% if current_user.admin? %>
+    <div class="mb-3">
+      <%= f.label :pet_id, class: 'form-label' %>
+      <%= f.collection_select :pet_id, Pet.all, :id, :name, 
+                            { prompt: 'Select pet' }, 
+                            { class: 'form-select' } %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :vet_id, class: 'form-label' %>
+      <%= f.collection_select :vet_id, Vet.all, :id, :first_name, 
+                            { prompt: 'Select vet' }, 
+                            { class: 'form-select' } %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :date, class: 'form-label' %>
+      <%= f.datetime_field :date, class: 'form-control' %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :reason, class: 'form-label' %>
+      <%= f.text_area :reason, rows: 3, class: 'form-control' %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :status, class: 'form-label' %>
+      <%= f.select :status, Appointment.statuses.keys.map { |s| [s.titleize, s] }, 
+                  {}, { class: 'form-select' } %>
+    </div>
+
+  <% elsif current_user.vet? %>
+    <div class="mb-3">
+      <%= f.label :vet_id, class: 'form-label' %>
+      <% if @appointment.persisted? %>
+        <%= f.collection_select :vet_id, Vet.where(id: @appointment.vet_id), :id, :first_name, 
+                              {}, { class: 'form-select', disabled: true } %>
+        <%= f.hidden_field :vet_id %>
+      <% else %>
+        <%= f.collection_select :vet_id, Vet.where(id: current_user.vet.id), :id, :first_name, 
+                              { prompt: 'Select vet' }, 
+                              { class: 'form-select' } %>
+      <% end %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :date, class: 'form-label' %>
+      <%= f.datetime_field :date, class: 'form-control' %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :reason, class: 'form-label' %>
+      <%= f.text_area :reason, rows: 3, class: 'form-control' %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :status, class: 'form-label' %>
+      <%= f.select :status, Appointment.statuses.keys.map { |s| [s.titleize, s] }, 
+                  {}, { class: 'form-select' } %>
+    </div>
+
+  <% elsif current_user.owner? %>
+    <div class="mb-3">
+      <%= f.label :pet_id, class: 'form-label' %>
+      <% if @appointment.pet %>
+        <%= f.text_field :pet_name, value: @appointment.pet.name, class: 'form-control', disabled: true %>
+        <%= f.hidden_field :pet_id %>
+      <% else %>
+        <%= f.collection_select :pet_id, current_user.owner.pets, :id, :name, 
+                              { prompt: 'Select your pet' }, 
+                              { class: 'form-select' } %>
+      <% end %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :vet_id, class: 'form-label' %>
+      <%= f.collection_select :vet_id, Vet.all, :id, :first_name, 
+                            { prompt: 'Select vet' }, 
+                            { class: 'form-select' } %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :date, class: 'form-label' %>
+      <%= f.datetime_field :date, class: 'form-control' %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :reason, class: 'form-label' %>
+      <%= f.text_area :reason, rows: 3, class: 'form-control' %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :status, class: 'form-label' %>
+      <%= f.select :status, Appointment.statuses.keys.map { |s| [s.titleize, s] }, 
+                  {}, { class: 'form-select' } %>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.submit class: 'btn btn-primary' %>
+    <%= link_to 'Cancel', appointments_path, class: 'btn btn-secondary' %>
+  </div>
+<% end %>

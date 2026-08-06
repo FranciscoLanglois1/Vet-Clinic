@@ -1,0 +1,53 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Pets</h1>
+    
+    <% if policy(Pet).create? %>
+      <%= link_to "New Pet", new_pet_path, class: "btn btn-primary" %>
+    <% end %>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>Name</th>
+          <th>Species</th>
+          <th>Breed</th>
+          <th>Date of Birth</th>
+          <th>Weight (kg)</th>
+          <th>Owner</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @pets.each do |pet| %>
+          <tr> 
+            <td><%= link_to pet.name, pet_path(pet), class: "text-decoration-none" %></td>
+            <td><%= pet.species %></td>
+            <td><%= pet.breed %></td>
+            <td><%= pet.date_of_birth.strftime("%B %d, %Y") if pet.date_of_birth %></td>
+            <td><%= pet.weight %></td>
+            <td><%= link_to pet.owner.first_name, owner_path(pet.owner), class: "text-decoration-none" if pet.owner %></td>
+            <td>
+              <div class="btn-group" role="group">
+                <%= link_to "Show", pet_path(pet), class: "btn btn-sm btn-info" %>
+                
+                <% if policy(pet).update? %>
+                  <%= link_to "Edit", edit_pet_path(pet), class: "btn btn-sm btn-warning" %>
+                <% end %>
+                
+                <% if policy(pet).destroy? %>
+                  <%= link_to "Delete", pet_path(pet), 
+                                method: :delete, 
+                                data: { turbo_confirm: "Are you sure?" }, 
+                                class: "btn btn-sm btn-danger" %>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

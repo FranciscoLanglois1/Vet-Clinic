@@ -1,0 +1,15 @@
+one:
+  name: Firulais
+  species: Dog
+  breed: Labrador
+  date_of_birth: 2020-01-01
+  weight: 25.5
+  owner: one
+
+two:
+  name: Michi
+  species: Cat
+  breed: Siamese
+  date_of_birth: 2021-06-15
+  weight: 4.2
+  owner: one

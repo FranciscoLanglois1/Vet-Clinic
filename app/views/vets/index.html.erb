@@ -1,0 +1,51 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Vets</h1>
+    
+    <% if policy(Vet).create? %>
+      <%= link_to "New Vet", new_vet_path, class: "btn btn-primary" %>
+    <% end %>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Specialization</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @vets.each do |vet| %>
+          <tr>
+            <td><%= link_to vet.first_name, vet_path(vet), class: "text-decoration-none" %></td>
+            <td><%= vet.last_name %></td>
+            <td><%= vet.email %></td>
+            <td><%= vet.phone %></td>
+            <td><%= vet.specialization %></td>
+            <td>
+              <div class="btn-group" role="group">
+                <%= link_to "Show", vet_path(vet), class: "btn btn-sm btn-info" %>
+                
+                <% if policy(vet).update? %>
+                  <%= link_to "Edit", edit_vet_path(vet), class: "btn btn-sm btn-warning" %>
+                <% end %>
+                
+                <% if policy(vet).destroy? %>
+                  <%= link_to "Delete", vet_path(vet), 
+                                method: :delete, 
+                                data: { turbo_confirm: "Are you sure?" }, 
+                                class: "btn btn-sm btn-danger" %>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+one:
+  first_name: Juan
+  last_name: Perez
+  email: juan@example.com
+  phone: "123-456-7890"
+  address: Calle Falsa 123
+
+two:
+  first_name: Maria
+  last_name: Lopez
+  email: maria@example.com
+  phone: "098-765-4321"
+  address: Av. Siempre Viva 456

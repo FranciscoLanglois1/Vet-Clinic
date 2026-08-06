@@ -1,0 +1,13 @@
+one:
+  appointment: one
+  name: Vaccine
+  medication: Rabies
+  dosage: "1 ml"
+  administered_at: 2024-01-15 10:30:00
+
+two:
+  appointment: two
+  name: Checkup
+  medication: None
+  dosage: "-"
+  administered_at: 2024-01-20 15:00:00

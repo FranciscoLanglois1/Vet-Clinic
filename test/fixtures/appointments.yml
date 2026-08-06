@@ -1,0 +1,13 @@
+one:
+  pet: one
+  vet: one
+  date: 2024-01-15 10:00:00
+  reason: Annual checkup
+  status: scheduled
+
+two:
+  pet: two
+  vet: one
+  date: 2024-01-20 14:30:00
+  reason: Vaccination
+  status: completed
